@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RekenTest.Common.DTO
+namespace RekenTest.Common.Interfaces
 {
-    public class ProblemValue
+    interface IProblemValue
     {
     }
 }
