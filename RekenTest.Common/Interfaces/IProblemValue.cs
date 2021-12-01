@@ -4,7 +4,10 @@ using System.Text;
 
 namespace RekenTest.Common.Interfaces
 {
-    interface IProblemValue
+    public interface IProblemValue
     {
+        uint Value { get; set; }
+        byte Decimals { get; set; }
+        public bool ParseFromString(string problemValueAsText);
     }
 }

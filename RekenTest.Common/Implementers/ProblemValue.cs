@@ -33,5 +33,10 @@ namespace RekenTest.Common.Implementers
                 _decimals = value;
             }
         }
+
+        public bool ParseFromString(string problemValueAsText)
+        {
+            return false;
+        }
     }
 }

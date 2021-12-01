@@ -37,5 +37,15 @@ namespace RekenTest.Common.Tests
                 ClassSUT.Decimals = ProblemValueTypes.MaxDecimalDigits + 1;
             });
         }
+
+        [Test]
+        [TestCase("", "Empty value")]
+        [TestCase("a", "")]
+        [TestCase("10000000", "Value too large")]
+        [TestCase("0.0000001", "Too many decimals")]
+        public void ParseFromStringParseFromString_InvalidInputString_ShouldReturnFalse(string value, string message)
+        {
+            Assert.IsFalse(ClassSUT.ParseFromString(value), message);
+        }
     }
 }
