@@ -2,7 +2,9 @@
 using RekenTest.Common.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
+using System.Threading;
 
 namespace RekenTest.Common.Implementers
 {
@@ -36,7 +38,30 @@ namespace RekenTest.Common.Implementers
 
         public bool ParseFromString(string problemValueAsText)
         {
-            return false;
+            try
+            {
+                // find decimal separator position
+                var decimalSeparatorPosition = problemValueAsText.IndexOf(Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+
+                if (decimalSeparatorPosition < 0)
+                {
+                    // no decimal separator found
+                    _value = Convert.ToUInt32(problemValueAsText);
+                }
+                else
+                {
+                    _value = Convert.ToUInt32(problemValueAsText.Substring(0, decimalSeparatorPosition));
+                    var temp = problemValueAsText.Substring(decimalSeparatorPosition + 1, problemValueAsText.Length - decimalSeparatorPosition - 1);
+                    _decimals = Convert.ToByte(temp);
+                    return true;
+                }
+
+                return (_value <= ProblemValueTypes.MaxProblemValue);
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

@@ -41,11 +41,31 @@ namespace RekenTest.Common.Tests
         [Test]
         [TestCase("", "Empty value")]
         [TestCase("a", "")]
-        [TestCase("10000000", "Value too large")]
+        [TestCase("9999999", "Value too large")]
         [TestCase("0.0000001", "Too many decimals")]
         public void ParseFromStringParseFromString_InvalidInputString_ShouldReturnFalse(string value, string message)
         {
             Assert.IsFalse(ClassSUT.ParseFromString(value), message);
+        }
+
+        [Test]
+        [TestCase("0", "")]
+        [TestCase("1", "")]
+        [TestCase("1234567", "")]
+        [TestCase("9999998", "Max value allowed")]
+        public void ParseFromStringParseFromString_ValidIntValues_ShouldReturnTrue(string value, string message)
+        {
+            Assert.IsTrue(ClassSUT.ParseFromString(value), message);
+        }
+
+        [Test]
+        [TestCase("0.1", "")]
+        [TestCase("0.000001", "")]
+        [TestCase("1.234", "")]
+        [TestCase("123456.7", "")]
+        public void ParseFromStringParseFromString_ValidDecimalValues_ShouldReturnTrue(string value, string message)
+        {
+            Assert.IsTrue(ClassSUT.ParseFromString(value), message);
         }
     }
 }
