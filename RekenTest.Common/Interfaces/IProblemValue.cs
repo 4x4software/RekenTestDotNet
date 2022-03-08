@@ -9,5 +9,6 @@ namespace RekenTest.Common.Interfaces
         uint Value { get; set; }
         byte Decimals { get; set; }
         public bool ParseFromString(string problemValueAsText);
+        public bool IsValid();
     }
 }

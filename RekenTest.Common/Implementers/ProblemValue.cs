@@ -16,24 +16,17 @@ namespace RekenTest.Common.Implementers
         public uint Value
         {
             get { return _value; }
-            set
-            {
-                if (value > ProblemValueTypes.MaxProblemValue)
-                    throw new Exception($"Value {value} is too high. Max value is {ProblemValueTypes.MaxProblemValue}");
-
-                _value = value;
-            }
+            set { _value = value; }
         }
         public byte Decimals
         {
             get { return _decimals; }
-            set
-            {
-                if (value > ProblemValueTypes.MaxDecimalDigits)
-                    throw new Exception($"Value {value} too high. Max decimals is {ProblemValueTypes.MaxDecimalDigits}");
+            set { _decimals = value; }
+        }
 
-                _decimals = value;
-            }
+        public bool IsValid()
+        {
+            return (_value >= 0) && (_value <= ProblemValueTypes.MaxProblemValue) && (_decimals >= 0) && (_decimals <= ProblemValueTypes.MaxDecimalDigits);
         }
 
         public bool ParseFromString(string problemValueAsText)
@@ -47,16 +40,18 @@ namespace RekenTest.Common.Implementers
                 {
                     // no decimal separator found
                     _value = Convert.ToUInt32(problemValueAsText);
+                    _decimals = 0;
                 }
                 else
                 {
-                    _value = Convert.ToUInt32(problemValueAsText.Substring(0, decimalSeparatorPosition));
-                    var temp = problemValueAsText.Substring(decimalSeparatorPosition + 1, problemValueAsText.Length - decimalSeparatorPosition - 1);
-                    _decimals = Convert.ToByte(temp);
-                    return true;
+                    string valuePart = problemValueAsText.Substring(0, decimalSeparatorPosition);
+                    string decimalPart = problemValueAsText.Substring(decimalSeparatorPosition + 1, problemValueAsText.Length - decimalSeparatorPosition - 1);
+                    // value = string without decimal separator
+                    _value = Convert.ToUInt32(valuePart + decimalPart);
+                    _decimals = Convert.ToByte(decimalPart.Length);
                 }
 
-                return (_value <= ProblemValueTypes.MaxProblemValue);
+                return IsValid();
             }
             catch
             {

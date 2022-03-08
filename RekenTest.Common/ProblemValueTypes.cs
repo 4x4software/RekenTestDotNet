@@ -8,7 +8,7 @@ namespace RekenTest.Common
 
     public static class ProblemValueTypes
     {
-        public const uint MaxProblemValue = 9999998;
+        public const int MaxProblemValue = 9999998;
         public const byte MaxDecimalDigits = 6;
     }
 }
