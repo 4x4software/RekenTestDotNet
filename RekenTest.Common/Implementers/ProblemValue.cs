@@ -29,27 +29,19 @@ namespace RekenTest.Common.Implementers
             return (_value >= 0) && (_value <= ProblemValueTypes.MaxProblemValue) && (_decimals >= 0) && (_decimals <= ProblemValueTypes.MaxDecimalDigits);
         }
 
-        public bool ParseFromString(string problemValueAsText)
+        public bool ParseFromString(string inputValue)
         {
             try
             {
-                // find decimal separator position
-                var decimalSeparatorPosition = problemValueAsText.IndexOf(Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                // find decimal separator index
+                int decimalSeparatorIndex = inputValue.IndexOf(Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
-                if (decimalSeparatorPosition < 0)
-                {
-                    // no decimal separator found
-                    _value = Convert.ToUInt32(problemValueAsText);
-                    _decimals = 0;
-                }
-                else
-                {
-                    string valuePart = problemValueAsText.Substring(0, decimalSeparatorPosition);
-                    string decimalPart = problemValueAsText.Substring(decimalSeparatorPosition + 1, problemValueAsText.Length - decimalSeparatorPosition - 1);
-                    // value = string without decimal separator
-                    _value = Convert.ToUInt32(valuePart + decimalPart);
-                    _decimals = Convert.ToByte(decimalPart.Length);
-                }
+                // strip decimal separator from input string
+                string valueAsString = (decimalSeparatorIndex < 0) ? inputValue : inputValue.Remove(decimalSeparatorIndex, 1);
+
+                // Example: inputValue="1.234" results in: _value=1234 _decimals=3
+                _value = Convert.ToUInt32(valueAsString);
+                _decimals = (decimalSeparatorIndex <= 0) ? (byte)0 : (byte)(inputValue.Length - decimalSeparatorIndex - 1);
 
                 return IsValid();
             }
