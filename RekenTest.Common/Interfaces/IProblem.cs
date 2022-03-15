@@ -8,5 +8,6 @@ namespace RekenTest.Common.Interfaces
     {
         public void AssignValues(ProblemType problemType, IProblemValue problemValueA, IProblemValue problemValueB);
         public bool ParseFromString(string problemAsText);
+        public IProblemValue GetCorrectAnswer();
     }
 }

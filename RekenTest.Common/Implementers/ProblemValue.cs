@@ -24,6 +24,12 @@ namespace RekenTest.Common.Implementers
             set { _decimals = value; }
         }
 
+        public void Assign(IProblemValue source)
+        {
+            _value = source.Value;
+            _decimals = source.Decimals;
+        }
+
         public bool IsValid()
         {
             return (_value >= 0) && (_value <= ProblemValueTypes.MaxProblemValue) && (_decimals >= 0) && (_decimals <= ProblemValueTypes.MaxDecimalDigits);

@@ -16,6 +16,18 @@ namespace RekenTest.Common.Tests
         }
 
         [Test]
+        public void Assign_Test()
+        {
+            IProblemValue sourceValue = new ProblemValue();
+            sourceValue.Value = 123;
+            sourceValue.Decimals = 2;
+
+            ClassSUT.Assign(sourceValue);
+            Assert.AreEqual(sourceValue.Value, ClassSUT.Value);
+            Assert.AreEqual(sourceValue.Decimals, ClassSUT.Decimals);
+        }
+
+        [Test]
         public void SetPropertyValues_ShouldAssignValues()
         {
             ClassSUT.Value = 123;
