@@ -5,55 +5,55 @@ using System;
 
 namespace RekenTest.Common.Tests
 {
-    public class ProblemValueTests
+    public class ProblemValueTests: ProblemValueTestBase
     {
-        private IProblemValue ClassSUT = null;
+        private IProblemValue classSUT = null;
 
         [SetUp]
         public void Setup()
         {
-            ClassSUT = new ProblemValue();
+            classSUT = problemValueFactory.NewProblemValue();
         }
 
         [Test]
         public void Assign_Test()
         {
-            IProblemValue sourceValue = new ProblemValue();
+            IProblemValue sourceValue = problemValueFactory.NewProblemValue();
             sourceValue.Value = 123;
             sourceValue.Decimals = 2;
 
-            ClassSUT.Assign(sourceValue);
-            Assert.AreEqual(sourceValue.Value, ClassSUT.Value);
-            Assert.AreEqual(sourceValue.Decimals, ClassSUT.Decimals);
+            classSUT.Assign(sourceValue);
+            Assert.AreEqual(sourceValue.Value, classSUT.Value);
+            Assert.AreEqual(sourceValue.Decimals, classSUT.Decimals);
         }
 
         [Test]
         public void SetPropertyValues_ShouldAssignValues()
         {
-            ClassSUT.Value = 123;
-            ClassSUT.Decimals = 2;
+            classSUT.Value = 123;
+            classSUT.Decimals = 2;
 
-            Assert.AreEqual(123, ClassSUT.Value);
-            Assert.AreEqual(2, ClassSUT.Decimals);
+            Assert.AreEqual(123, classSUT.Value);
+            Assert.AreEqual(2, classSUT.Decimals);
         }
 
         [Test]
         public void IsValid_Tests()
         {
-            ClassSUT.Value = 0;
-            Assert.IsTrue(ClassSUT.IsValid());
-            ClassSUT.Value = ProblemValueTypes.MaxProblemValue;
-            Assert.IsTrue(ClassSUT.IsValid());
-            ClassSUT.Value = ProblemValueTypes.MaxProblemValue + 1;
-            Assert.IsFalse(ClassSUT.IsValid());
+            classSUT.Value = 0;
+            Assert.IsTrue(classSUT.IsValid());
+            classSUT.Value = ProblemValueTypes.MaxProblemValue;
+            Assert.IsTrue(classSUT.IsValid());
+            classSUT.Value = ProblemValueTypes.MaxProblemValue + 1;
+            Assert.IsFalse(classSUT.IsValid());
 
-            ClassSUT.Value = 0;
-            ClassSUT.Decimals = 0;
-            Assert.IsTrue(ClassSUT.IsValid());
-            ClassSUT.Decimals = ProblemValueTypes.MaxDecimalDigits;
-            Assert.IsTrue(ClassSUT.IsValid());
-            ClassSUT.Decimals = ProblemValueTypes.MaxDecimalDigits + 1;
-            Assert.IsFalse(ClassSUT.IsValid());
+            classSUT.Value = 0;
+            classSUT.Decimals = 0;
+            Assert.IsTrue(classSUT.IsValid());
+            classSUT.Decimals = ProblemValueTypes.MaxDecimalDigits;
+            Assert.IsTrue(classSUT.IsValid());
+            classSUT.Decimals = ProblemValueTypes.MaxDecimalDigits + 1;
+            Assert.IsFalse(classSUT.IsValid());
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace RekenTest.Common.Tests
         [TestCase("0.0000001", "Too many decimals")]
         public void ParseFromString_InvalidInputString_ShouldReturnFalse(string value, string message)
         {
-            Assert.IsFalse(ClassSUT.ParseFromString(value), message);
+            Assert.IsFalse(classSUT.ParseFromString(value), message);
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace RekenTest.Common.Tests
         [TestCase("9999998", "Max value allowed")]
         public void ParseFromString_ValidIntValues_ShouldReturnTrue(string value, string message)
         {
-            Assert.IsTrue(ClassSUT.ParseFromString(value), message);
+            Assert.IsTrue(classSUT.ParseFromString(value), message);
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace RekenTest.Common.Tests
         [TestCase("1.234567", "")]
         public void ParseFromString_ValidDecimalValues_ShouldReturnTrue(string value, string message)
         {
-            Assert.IsTrue(ClassSUT.ParseFromString(value), message);
+            Assert.IsTrue(classSUT.ParseFromString(value), message);
         }
 
         [Test]
@@ -97,11 +97,11 @@ namespace RekenTest.Common.Tests
         [TestCase("9999998", ProblemValueTypes.MaxProblemValue, 0)]
         public void ParseFromString_ValueTests(string input, int expectedValue, byte expectedDecimals)
         {
-            Assert.IsTrue(ClassSUT.ParseFromString(input));
+            Assert.IsTrue(classSUT.ParseFromString(input));
 
-            Assert.AreEqual(expectedValue, ClassSUT.Value, input);
-            Assert.AreEqual(expectedDecimals, ClassSUT.Decimals, input);
-            Assert.IsTrue(ClassSUT.IsValid());
+            Assert.AreEqual(expectedValue, classSUT.Value, input);
+            Assert.AreEqual(expectedDecimals, classSUT.Decimals, input);
+            Assert.IsTrue(classSUT.IsValid());
         }
     }
 }

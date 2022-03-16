@@ -12,4 +12,9 @@ namespace RekenTest.Common.Interfaces
         public bool IsValid();
         public void Assign(IProblemValue source);
     }
+
+    public interface IProblemValueFactory
+    {
+        public IProblemValue NewProblemValue();
+    }
 }

@@ -57,4 +57,12 @@ namespace RekenTest.Common.Implementers
             }
         }
     }
+
+    public class ProblemValueFactory : IProblemValueFactory
+    {
+        public IProblemValue NewProblemValue()
+        {
+            return new ProblemValue();
+        }
+    }
 }

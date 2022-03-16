@@ -8,7 +8,7 @@ using System.Text;
 namespace RekenTest.Common.Tests
 {
     [TestFixture]
-    public class ProblemCalculatorTests
+    public class ProblemCalculatorTests : ProblemValueTestBase
     {
         private IProblemCalculator ClassSUT = null;
 
@@ -27,10 +27,10 @@ namespace RekenTest.Common.Tests
         [TestCase("1.2", "1.234567", 6)]
         public void MakeDecimalsEqualTests(string inputValueA, string inputValueB, byte expectedDecimals)
         {
-            IProblemValue valueA = new ProblemValue();
+            IProblemValue valueA = problemValueFactory.NewProblemValue();
             valueA.ParseFromString(inputValueA);
 
-            IProblemValue valueB = new ProblemValue();
+            IProblemValue valueB = problemValueFactory.NewProblemValue();
             valueB.ParseFromString(inputValueB);
 
             ClassSUT.MakeDecimalesEqual(ref valueA, ref valueB);
@@ -43,10 +43,10 @@ namespace RekenTest.Common.Tests
         [Test]
         public void AddTests(string inputValueA, string inputValueB, string expectedValue)
         {
-            IProblemValue valueA = new ProblemValue();
+            IProblemValue valueA = problemValueFactory.NewProblemValue();
             valueA.ParseFromString(inputValueA);
 
-            IProblemValue valueB = new ProblemValue();
+            IProblemValue valueB = problemValueFactory.NewProblemValue();
             valueB.ParseFromString(inputValueB);
         }
     }
