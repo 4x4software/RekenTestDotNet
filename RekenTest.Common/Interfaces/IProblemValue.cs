@@ -16,5 +16,6 @@ namespace RekenTest.Common.Interfaces
     public interface IProblemValueFactory
     {
         public IProblemValue NewProblemValue();
+        public IProblemValue NewProblemValue(string value);
     }
 }

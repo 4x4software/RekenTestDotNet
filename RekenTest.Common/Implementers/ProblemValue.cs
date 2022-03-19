@@ -64,5 +64,14 @@ namespace RekenTest.Common.Implementers
         {
             return new ProblemValue();
         }
+
+        public IProblemValue NewProblemValue(string value)
+        {
+            var problemValue = NewProblemValue();
+
+            problemValue.ParseFromString(value);
+            
+            return problemValue;
+        }
     }
 }

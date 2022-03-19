@@ -6,7 +6,7 @@ namespace RekenTest.Common.Interfaces
 {
     public interface IProblemCalculator
     {
-        public void MakeDecimalesEqual(ref IProblemValue valueA, ref IProblemValue valueB);
+        public bool MakeDecimalesEqual(ref IProblemValue valueA, ref IProblemValue valueB);
         public IProblemValue AddProblemValues(IProblemValue valueA, IProblemValue valueB);
     }
 }
