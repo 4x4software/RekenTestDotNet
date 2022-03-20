@@ -56,6 +56,21 @@ namespace RekenTest.Common.Implementers
                 return false;
             }
         }
+
+        public bool SetAnswerForValues(ProblemType problemType, IProblemValue valueA, IProblemValue valueB)
+        {
+            switch (problemType)
+            {
+                case ProblemType.ptAdd:
+                    {
+                        return ProblemCalculator.AddProblemValues(valueA, valueB, this);
+                    }
+                default:
+                    {
+                        return false;
+                    }
+            }
+        }
     }
 
     public class ProblemValueFactory : IProblemValueFactory
@@ -70,7 +85,7 @@ namespace RekenTest.Common.Implementers
             var problemValue = NewProblemValue();
 
             problemValue.ParseFromString(value);
-            
+
             return problemValue;
         }
     }

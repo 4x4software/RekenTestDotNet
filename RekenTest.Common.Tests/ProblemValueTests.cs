@@ -103,5 +103,31 @@ namespace RekenTest.Common.Tests
             Assert.AreEqual(expectedDecimals, classSUT.Decimals, input);
             Assert.IsTrue(classSUT.IsValid());
         }
+
+        [Test]
+        [TestCase("1", "1", "2")]
+        [TestCase("1000", "0.001", "1000.001")]
+        public void SetAnswerForValues_ValidAdd_Tests(string inputValueA, string inputValueB, string inputExpected)
+        {
+            IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
+            IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
+            IProblemValue expectedValue = problemValueFactory.NewProblemValue(inputExpected);
+
+            Assert.IsTrue(classSUT.SetAnswerForValues(ProblemType.ptAdd, valueA, valueB));
+
+            Assert.AreEqual(expectedValue.Value, classSUT.Value);
+            Assert.AreEqual(expectedValue.Decimals, classSUT.Decimals);
+        }
+
+        [Test]
+        [TestCase("9999998", "1")]
+        [TestCase("1000000", "0.000001")]
+        public void SetAnswerForValues_InvalidAdd_Tests(string inputValueA, string inputValueB)
+        {
+            IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
+            IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
+
+            Assert.IsFalse(classSUT.SetAnswerForValues(ProblemType.ptAdd, valueA, valueB));
+        }
     }
 }

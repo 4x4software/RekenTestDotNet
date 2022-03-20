@@ -11,6 +11,7 @@ namespace RekenTest.Common.Interfaces
         public bool ParseFromString(string problemValueAsText);
         public bool IsValid();
         public void Assign(IProblemValue source);
+        public bool SetAnswerForValues(ProblemType problemType, IProblemValue valueA, IProblemValue valueB);
     }
 
     public interface IProblemValueFactory
