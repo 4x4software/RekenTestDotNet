@@ -7,7 +7,7 @@ namespace RekenTest.Common.Implementers
 {
     public class ProblemCalculator
     {
-        public static bool MakeDecimalesEqual(ref IProblemValue valueA, ref IProblemValue valueB)
+        public static bool MakeDecimalsEqual(ref IProblemValue valueA, ref IProblemValue valueB)
         {
             if (valueA.Decimals == valueB.Decimals)
                 return true;
@@ -33,23 +33,44 @@ namespace RekenTest.Common.Implementers
             return true;
         }
 
-        public static bool AddProblemValues(IProblemValue valueA, IProblemValue valueB, IProblemValue answer)
+        private static bool AddSubtractProblemValues(IProblemValue valueA, IProblemValue valueB, IProblemValue answer, bool subtractValues)
         {
             IProblemValue tempValueA = new ProblemValue();
             tempValueA.Assign(valueA);
             IProblemValue tempValueB = new ProblemValue();
             tempValueB.Assign(valueB);
 
-            if (!MakeDecimalesEqual(ref tempValueA, ref tempValueB))
+            if (!MakeDecimalsEqual(ref tempValueA, ref tempValueB))
                 return false;
 
-            if ((tempValueA.Value + tempValueB.Value) > ProblemValueTypes.MaxProblemValue)
-                return false;
+            if (subtractValues)
+            {
+                if (tempValueA.Value < tempValueB.Value) // uint types, cant use minus symbol here 
+                    return false;
 
-            answer.Value = tempValueA.Value + tempValueB.Value;
+                answer.Value = tempValueA.Value - tempValueB.Value;
+            }
+            else
+            {
+                if ((tempValueA.Value + tempValueB.Value) > ProblemValueTypes.MaxProblemValue)
+                    return false;
+
+                answer.Value = tempValueA.Value + tempValueB.Value;
+            }
+
             answer.Decimals = tempValueA.Decimals;
 
             return true;
+        }
+
+        public static bool AddProblemValues(IProblemValue valueA, IProblemValue valueB, IProblemValue answer)
+        {
+            return AddSubtractProblemValues(valueA, valueB, answer, false);
+        }
+
+        public static bool SubtractProblemValues(IProblemValue valueA, IProblemValue valueB, IProblemValue answer)
+        {
+            return AddSubtractProblemValues(valueA, valueB, answer, true);
         }
     }
 }

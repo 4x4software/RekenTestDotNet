@@ -22,7 +22,7 @@ namespace RekenTest.Common.Tests
             IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
             IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
 
-            Assert.IsTrue(ProblemCalculator.MakeDecimalesEqual(ref valueA, ref valueB));
+            Assert.IsTrue(ProblemCalculator.MakeDecimalsEqual(ref valueA, ref valueB));
 
             Assert.AreEqual(expectedDecimals, valueA.Decimals);
             Assert.AreEqual(valueA.Decimals, valueB.Decimals);
@@ -40,7 +40,7 @@ namespace RekenTest.Common.Tests
             IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
             IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
 
-            Assert.IsFalse(ProblemCalculator.MakeDecimalesEqual(ref valueA, ref valueB));
+            Assert.IsFalse(ProblemCalculator.MakeDecimalsEqual(ref valueA, ref valueB));
         }
 
         [TestCase("0.1", "1000000")]
@@ -53,7 +53,7 @@ namespace RekenTest.Common.Tests
             IProblemValue originalValueA = problemValueFactory.NewProblemValue(inputValueA);
             IProblemValue originalValueB = problemValueFactory.NewProblemValue(inputValueB);
 
-            Assert.IsFalse(ProblemCalculator.MakeDecimalesEqual(ref valueA, ref valueB));
+            Assert.IsFalse(ProblemCalculator.MakeDecimalsEqual(ref valueA, ref valueB));
 
             Assert.AreEqual(originalValueA.Decimals, valueA.Decimals);
             Assert.AreEqual(originalValueA.Value, valueA.Value);
@@ -62,25 +62,45 @@ namespace RekenTest.Common.Tests
             Assert.AreEqual(originalValueB.Value, valueB.Value);
         }
 
-        [TestCase("1", "1", "2")]
+        [TestCase("1", "0", "1")]
+        [TestCase("2", "1", "3")]
         [TestCase("9999997", "1", "9999998")]
         [TestCase("9000", "0.001", "9000.001")]
         [TestCase("1", "0.000001", "1.000001")]
         [Test]
-        public void AddProblemValues_Valid_Tests(string inputValueA, string inputValueB, string expectedValue)
+        public void AddProblemValues_Valid_Tests(string inputValueA, string inputValueB, string expectedAddValue)
         {
             IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
             IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
-            IProblemValue expected = problemValueFactory.NewProblemValue(expectedValue);
+            IProblemValue expectedAdd = problemValueFactory.NewProblemValue(expectedAddValue);
             IProblemValue actual = problemValueFactory.NewProblemValue();
 
             Assert.IsTrue(ProblemCalculator.AddProblemValues(valueA, valueB, actual));
 
-            Assert.AreEqual(expected.Decimals, actual.Decimals);
-            Assert.AreEqual(expected.Value, actual.Value);
+            Assert.AreEqual(expectedAdd.Decimals, actual.Decimals);
+            Assert.AreEqual(expectedAdd.Value, actual.Value);
         }
 
-        [TestCase("9999998", "1", "Value too high")]
+        [TestCase("1", "1", "0")]
+        [TestCase("2", "1", "1")]
+        [TestCase("9999997", "1", "9999996")]
+        [TestCase("9000", "0.001", "8999.999")]
+        [TestCase("1", "0.000001", "0.999999")]
+        [Test]
+        public void SubtractProblemValues_Valid_Tests(string inputValueA, string inputValueB, string expectedSubtractValue)
+        {
+            IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
+            IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
+            IProblemValue expectedSubtract = problemValueFactory.NewProblemValue(expectedSubtractValue);
+            IProblemValue actual = problemValueFactory.NewProblemValue();
+
+            Assert.IsTrue(ProblemCalculator.SubtractProblemValues(valueA, valueB, actual));
+
+            Assert.AreEqual(expectedSubtract.Decimals, actual.Decimals);
+            Assert.AreEqual(expectedSubtract.Value, actual.Value);
+        }
+
+        [TestCase("9999998", "1", "Answer too high")]
         [TestCase("9000", "0.0001", "Value+decimals too high")]
         [TestCase("1", "0.0000001", "Too many decimals")]
         [Test]
@@ -92,5 +112,18 @@ namespace RekenTest.Common.Tests
 
             Assert.IsFalse(ProblemCalculator.AddProblemValues(valueA, valueB, actual), message);
         }
-    }
+
+        [TestCase("1", "2", "Answer below zero")]
+        [TestCase("9000", "0.0001", "Value+decimals too high")]
+        [TestCase("1", "0.0000001", "Too many decimals")]
+        [Test]
+        public void SubtractProblemValues_Invalid_Tests(string inputValueA, string inputValueB, string message)
+        {
+            IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
+            IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
+            IProblemValue actual = problemValueFactory.NewProblemValue();
+
+            Assert.IsFalse(ProblemCalculator.SubtractProblemValues(valueA, valueB, actual), message);
+        }
+     }
 }
