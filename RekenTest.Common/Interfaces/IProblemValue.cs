@@ -12,6 +12,7 @@ namespace RekenTest.Common.Interfaces
         public bool IsValid();
         public void Assign(IProblemValue source);
         public bool SetAnswerForValues(ProblemType problemType, IProblemValue valueA, IProblemValue valueB);
+        public void RemoveTrailingZeros();
     }
 
     public interface IProblemValueFactory

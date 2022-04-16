@@ -125,5 +125,33 @@ namespace RekenTest.Common.Tests
 
             Assert.IsFalse(ProblemCalculator.SubtractProblemValues(valueA, valueB, actual), message);
         }
-     }
+
+        [TestCase("1", "1", "1")]
+        [TestCase("0.1", "0.2", "0.02")]
+        [TestCase("2000", "2000", "4000000")]
+        [TestCase("0.001", "2000", "2")]
+        public void MultiplyProblemValues_Valid_Tests(string inputValueA, string inputValueB, string expectedMultiplyValue)
+        {
+            IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
+            IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
+            IProblemValue expectedMultiply = problemValueFactory.NewProblemValue(expectedMultiplyValue);
+            IProblemValue actual = problemValueFactory.NewProblemValue();
+
+            Assert.IsTrue(ProblemCalculator.MultiplyProblemValues(valueA, valueB, actual));
+
+            Assert.AreEqual(expectedMultiply.Decimals, actual.Decimals);
+            Assert.AreEqual(expectedMultiply.Value, actual.Value);
+        }
+
+        [TestCase("10000", "1000", "Value too high")]
+        [TestCase("0.0001", "0.0001", "Too many decimals")]
+        public void MultiplyProblemValues_Invalid_Tests(string inputValueA, string inputValueB, string message)
+        {
+            IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
+            IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
+            IProblemValue actual = problemValueFactory.NewProblemValue();
+
+            Assert.IsFalse(ProblemCalculator.MultiplyProblemValues(valueA, valueB, actual), message);
+        }
+    }
 }

@@ -129,5 +129,25 @@ namespace RekenTest.Common.Tests
 
             Assert.IsFalse(classSUT.SetAnswerForValues(ProblemType.ptAdd, valueA, valueB));
         }
+
+        [Test]
+        [TestCase("1", "1")]
+        [TestCase("1.0", "1")]
+        [TestCase("1.0000000", "1")]
+        [TestCase("0.1", "0.1")]
+        [TestCase("0.10", "0.1")]
+        [TestCase("0.1000000", "0.1")]
+        [TestCase("0.000010", "0.00001")]
+        [TestCase("1000.010", "1000.01")]
+        public void RemoveTrailingZeros_Tests(string inputValue, string expectedValue)
+        {
+            IProblemValue value = problemValueFactory.NewProblemValue(inputValue);
+            IProblemValue expected = problemValueFactory.NewProblemValue(expectedValue);
+
+            value.RemoveTrailingZeros();
+
+            Assert.AreEqual(expected.Value, value.Value);
+            Assert.AreEqual(expected.Decimals, value.Decimals);
+        }
     }
 }

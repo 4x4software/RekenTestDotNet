@@ -57,6 +57,20 @@ namespace RekenTest.Common.Implementers
             }
         }
 
+        public void RemoveTrailingZeros()
+        {
+            while (_decimals > 0) 
+            {
+                if (_value % 10 == 0)
+                {
+                    _value = _value / 10; // note that / operator is an integer division
+                    _decimals--;
+                }
+                else
+                    break;
+            }
+        }
+
         public bool SetAnswerForValues(ProblemType problemType, IProblemValue valueA, IProblemValue valueB)
         {
             switch (problemType)

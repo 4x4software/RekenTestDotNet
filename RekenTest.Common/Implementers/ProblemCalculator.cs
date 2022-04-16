@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RekenTest.Common.Implementers
 {
-    public class ProblemCalculator
+    public static class ProblemCalculator
     {
         public static bool MakeDecimalsEqual(ref IProblemValue valueA, ref IProblemValue valueB)
         {
@@ -71,6 +71,21 @@ namespace RekenTest.Common.Implementers
         public static bool SubtractProblemValues(IProblemValue valueA, IProblemValue valueB, IProblemValue answer)
         {
             return AddSubtractProblemValues(valueA, valueB, answer, true);
+        }
+
+        public static bool MultiplyProblemValues(IProblemValue valueA, IProblemValue valueB, IProblemValue answer)
+        {
+            IProblemValue tempValueA = new ProblemValue();
+            tempValueA.Assign(valueA);
+            IProblemValue tempValueB = new ProblemValue();
+            tempValueB.Assign(valueB);
+
+            answer.Value = tempValueA.Value * tempValueB.Value;
+            answer.Decimals = (byte)(tempValueA.Decimals + tempValueB.Decimals);
+
+            answer.RemoveTrailingZeros();
+
+            return answer.IsValid();
         }
     }
 }
