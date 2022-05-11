@@ -87,5 +87,51 @@ namespace RekenTest.Common.Implementers
 
             return answer.IsValid();
         }
+
+        public static bool DivideProblemValues(IProblemValue valueA, IProblemValue valueB, IProblemValue answer)
+        {
+            if (valueB.Value == 0)
+                return false;
+
+            int tempValueA = checked((int)valueA.Value);
+            int tempValueB = checked((int)valueB.Value);
+
+            // temp - no decimals answer
+            int ignoreRemainder = 0;
+            answer.Value = checked((uint)Math.DivRem(tempValueA, tempValueB, out ignoreRemainder));
+            answer.Decimals = 0;
+
+            int divideValue = tempValueA;
+            byte extraDecimals = 0;
+
+            while (((divideValue % valueB.Value) != 0) // % == modulus
+                && (extraDecimals < ProblemValueTypes.MaxDecimalDigits))
+            {
+                divideValue = divideValue * 10;
+                extraDecimals++;
+            }
+
+            int answerDecimals = valueA.Decimals - valueB.Decimals + extraDecimals;
+            while (answerDecimals < 0 )
+            {
+                divideValue = divideValue * 10;
+                answerDecimals++;
+            }
+
+            if ((divideValue % valueB.Value) != 0)
+                // answer is not an integer, like 1/3
+                return false;
+            if (divideValue > ProblemValueTypes.MaxProblemValue)
+                return false;
+            if (answerDecimals > ProblemValueTypes.MaxDecimalDigits)
+                return false;
+
+            answer.Value = checked((uint)Math.DivRem(divideValue, checked((int)valueB.Value), out ignoreRemainder));
+            answer.Decimals = checked((byte)answerDecimals);
+
+            answer.RemoveTrailingZeros();
+
+            return answer.IsValid();
+        }
     }
 }

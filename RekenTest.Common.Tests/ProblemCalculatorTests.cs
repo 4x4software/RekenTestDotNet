@@ -153,5 +153,38 @@ namespace RekenTest.Common.Tests
 
             Assert.IsFalse(ProblemCalculator.MultiplyProblemValues(valueA, valueB, actual), message);
         }
+
+        [TestCase("6", "2", "3")]
+        [TestCase("6", "20", "0.3")]
+        [TestCase("0.6", "2", "0.3")]
+        [TestCase("1.25", "0.25", "5")]
+        [TestCase("1000", "0.001", "1000000")]
+        [TestCase("0.001", "0.001", "1")]
+        [TestCase("0.001", "1000", "0.000001")]
+        public void DivideProblemValues_Valid_Tests(string inputValueA, string inputValueB, string expectedDivideValue)
+        {
+            IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
+            IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
+            IProblemValue expectedDivide = problemValueFactory.NewProblemValue(expectedDivideValue);
+            IProblemValue actual = problemValueFactory.NewProblemValue();
+
+            Assert.IsTrue(ProblemCalculator.DivideProblemValues(valueA, valueB, actual));
+
+            Assert.AreEqual(expectedDivide.Decimals, actual.Decimals);
+            Assert.AreEqual(expectedDivide.Value, actual.Value);
+        }
+
+        [TestCase("10", "0", "Division by zero")]
+        [TestCase("1", "3", "Answer not an integer")]
+        [TestCase("1000", "0.0000001", "Answervalue too large")]
+        [TestCase("0.0000001", "1000", "Answer has too many decimals")]
+        public void DivideProblemValues_Invalid_Tests(string inputValueA, string inputValueB, string message)
+        {
+            IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
+            IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
+            IProblemValue actual = problemValueFactory.NewProblemValue();
+
+            Assert.IsFalse(ProblemCalculator.DivideProblemValues(valueA, valueB, actual), message);
+        }
     }
 }
