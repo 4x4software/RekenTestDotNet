@@ -10,5 +10,14 @@ namespace RekenTest.Common.Interfaces
         byte Decimals { get; set; }
         public bool ParseFromString(string problemValueAsText);
         public bool IsValid();
+        public void Assign(IProblemValue source);
+        public bool SetAnswerForValues(ProblemType problemType, IProblemValue valueA, IProblemValue valueB);
+        public void RemoveTrailingZeros();
+    }
+
+    public interface IProblemValueFactory
+    {
+        public IProblemValue NewProblemValue();
+        public IProblemValue NewProblemValue(string value);
     }
 }

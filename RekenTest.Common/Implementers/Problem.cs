@@ -22,6 +22,11 @@ namespace RekenTest.Common.Implementers
             _problemValueB = problemValueB;
         }
 
+        public IProblemValue GetCorrectAnswer()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool ParseFromString(string problemAsText)
         {
             return false;

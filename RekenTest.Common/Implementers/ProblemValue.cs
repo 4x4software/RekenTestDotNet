@@ -24,6 +24,12 @@ namespace RekenTest.Common.Implementers
             set { _decimals = value; }
         }
 
+        public void Assign(IProblemValue source)
+        {
+            _value = source.Value;
+            _decimals = source.Decimals;
+        }
+
         public bool IsValid()
         {
             return (_value >= 0) && (_value <= ProblemValueTypes.MaxProblemValue) && (_decimals >= 0) && (_decimals <= ProblemValueTypes.MaxDecimalDigits);
@@ -49,6 +55,52 @@ namespace RekenTest.Common.Implementers
             {
                 return false;
             }
+        }
+
+        public void RemoveTrailingZeros()
+        {
+            while (_decimals > 0) 
+            {
+                if (_value % 10 == 0)
+                {
+                    _value = _value / 10; // note that / operator is an integer division
+                    _decimals--;
+                }
+                else
+                    break;
+            }
+        }
+
+        public bool SetAnswerForValues(ProblemType problemType, IProblemValue valueA, IProblemValue valueB)
+        {
+            switch (problemType)
+            {
+                case ProblemType.ptAdd:
+                    {
+                        return ProblemCalculator.AddProblemValues(valueA, valueB, this);
+                    }
+                default:
+                    {
+                        return false;
+                    }
+            }
+        }
+    }
+
+    public class ProblemValueFactory : IProblemValueFactory
+    {
+        public IProblemValue NewProblemValue()
+        {
+            return new ProblemValue();
+        }
+
+        public IProblemValue NewProblemValue(string value)
+        {
+            var problemValue = NewProblemValue();
+
+            problemValue.ParseFromString(value);
+
+            return problemValue;
         }
     }
 }

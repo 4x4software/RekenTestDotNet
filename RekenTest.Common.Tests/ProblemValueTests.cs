@@ -5,43 +5,55 @@ using System;
 
 namespace RekenTest.Common.Tests
 {
-    public class ProblemValueTests
+    public class ProblemValueTests: ProblemValueTestBase
     {
-        private IProblemValue ClassSUT = null;
+        private IProblemValue classSUT = null;
 
         [SetUp]
         public void Setup()
         {
-            ClassSUT = new ProblemValue();
+            classSUT = problemValueFactory.NewProblemValue();
+        }
+
+        [Test]
+        public void Assign_Test()
+        {
+            IProblemValue sourceValue = problemValueFactory.NewProblemValue();
+            sourceValue.Value = 123;
+            sourceValue.Decimals = 2;
+
+            classSUT.Assign(sourceValue);
+            Assert.AreEqual(sourceValue.Value, classSUT.Value);
+            Assert.AreEqual(sourceValue.Decimals, classSUT.Decimals);
         }
 
         [Test]
         public void SetPropertyValues_ShouldAssignValues()
         {
-            ClassSUT.Value = 123;
-            ClassSUT.Decimals = 2;
+            classSUT.Value = 123;
+            classSUT.Decimals = 2;
 
-            Assert.AreEqual(123, ClassSUT.Value);
-            Assert.AreEqual(2, ClassSUT.Decimals);
+            Assert.AreEqual(123, classSUT.Value);
+            Assert.AreEqual(2, classSUT.Decimals);
         }
 
         [Test]
         public void IsValid_Tests()
         {
-            ClassSUT.Value = 0;
-            Assert.IsTrue(ClassSUT.IsValid());
-            ClassSUT.Value = ProblemValueTypes.MaxProblemValue;
-            Assert.IsTrue(ClassSUT.IsValid());
-            ClassSUT.Value = ProblemValueTypes.MaxProblemValue + 1;
-            Assert.IsFalse(ClassSUT.IsValid());
+            classSUT.Value = 0;
+            Assert.IsTrue(classSUT.IsValid());
+            classSUT.Value = ProblemValueTypes.MaxProblemValue;
+            Assert.IsTrue(classSUT.IsValid());
+            classSUT.Value = ProblemValueTypes.MaxProblemValue + 1;
+            Assert.IsFalse(classSUT.IsValid());
 
-            ClassSUT.Value = 0;
-            ClassSUT.Decimals = 0;
-            Assert.IsTrue(ClassSUT.IsValid());
-            ClassSUT.Decimals = ProblemValueTypes.MaxDecimalDigits;
-            Assert.IsTrue(ClassSUT.IsValid());
-            ClassSUT.Decimals = ProblemValueTypes.MaxDecimalDigits + 1;
-            Assert.IsFalse(ClassSUT.IsValid());
+            classSUT.Value = 0;
+            classSUT.Decimals = 0;
+            Assert.IsTrue(classSUT.IsValid());
+            classSUT.Decimals = ProblemValueTypes.MaxDecimalDigits;
+            Assert.IsTrue(classSUT.IsValid());
+            classSUT.Decimals = ProblemValueTypes.MaxDecimalDigits + 1;
+            Assert.IsFalse(classSUT.IsValid());
         }
 
         [Test]
@@ -51,7 +63,7 @@ namespace RekenTest.Common.Tests
         [TestCase("0.0000001", "Too many decimals")]
         public void ParseFromString_InvalidInputString_ShouldReturnFalse(string value, string message)
         {
-            Assert.IsFalse(ClassSUT.ParseFromString(value), message);
+            Assert.IsFalse(classSUT.ParseFromString(value), message);
         }
 
         [Test]
@@ -61,7 +73,7 @@ namespace RekenTest.Common.Tests
         [TestCase("9999998", "Max value allowed")]
         public void ParseFromString_ValidIntValues_ShouldReturnTrue(string value, string message)
         {
-            Assert.IsTrue(ClassSUT.ParseFromString(value), message);
+            Assert.IsTrue(classSUT.ParseFromString(value), message);
         }
 
         [Test]
@@ -72,7 +84,7 @@ namespace RekenTest.Common.Tests
         [TestCase("1.234567", "")]
         public void ParseFromString_ValidDecimalValues_ShouldReturnTrue(string value, string message)
         {
-            Assert.IsTrue(ClassSUT.ParseFromString(value), message);
+            Assert.IsTrue(classSUT.ParseFromString(value), message);
         }
 
         [Test]
@@ -85,11 +97,57 @@ namespace RekenTest.Common.Tests
         [TestCase("9999998", ProblemValueTypes.MaxProblemValue, 0)]
         public void ParseFromString_ValueTests(string input, int expectedValue, byte expectedDecimals)
         {
-            Assert.IsTrue(ClassSUT.ParseFromString(input));
+            Assert.IsTrue(classSUT.ParseFromString(input));
 
-            Assert.AreEqual(expectedValue, ClassSUT.Value, input);
-            Assert.AreEqual(expectedDecimals, ClassSUT.Decimals, input);
-            Assert.IsTrue(ClassSUT.IsValid());
+            Assert.AreEqual(expectedValue, classSUT.Value, input);
+            Assert.AreEqual(expectedDecimals, classSUT.Decimals, input);
+            Assert.IsTrue(classSUT.IsValid());
+        }
+
+        [Test]
+        [TestCase("1", "1", "2")]
+        [TestCase("1000", "0.001", "1000.001")]
+        public void SetAnswerForValues_ValidAdd_Tests(string inputValueA, string inputValueB, string inputExpected)
+        {
+            IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
+            IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
+            IProblemValue expectedValue = problemValueFactory.NewProblemValue(inputExpected);
+
+            Assert.IsTrue(classSUT.SetAnswerForValues(ProblemType.ptAdd, valueA, valueB));
+
+            Assert.AreEqual(expectedValue.Value, classSUT.Value);
+            Assert.AreEqual(expectedValue.Decimals, classSUT.Decimals);
+        }
+
+        [Test]
+        [TestCase("9999998", "1")]
+        [TestCase("1000000", "0.000001")]
+        public void SetAnswerForValues_InvalidAdd_Tests(string inputValueA, string inputValueB)
+        {
+            IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
+            IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
+
+            Assert.IsFalse(classSUT.SetAnswerForValues(ProblemType.ptAdd, valueA, valueB));
+        }
+
+        [Test]
+        [TestCase("1", "1")]
+        [TestCase("1.0", "1")]
+        [TestCase("1.0000000", "1")]
+        [TestCase("0.1", "0.1")]
+        [TestCase("0.10", "0.1")]
+        [TestCase("0.1000000", "0.1")]
+        [TestCase("0.000010", "0.00001")]
+        [TestCase("1000.010", "1000.01")]
+        public void RemoveTrailingZeros_Tests(string inputValue, string expectedValue)
+        {
+            IProblemValue value = problemValueFactory.NewProblemValue(inputValue);
+            IProblemValue expected = problemValueFactory.NewProblemValue(expectedValue);
+
+            value.RemoveTrailingZeros();
+
+            Assert.AreEqual(expected.Value, value.Value);
+            Assert.AreEqual(expected.Decimals, value.Decimals);
         }
     }
 }
