@@ -97,8 +97,7 @@ namespace RekenTest.Common.Implementers
             int tempValueB = checked((int)valueB.Value);
 
             // temp - no decimals answer
-            int ignoreRemainder = 0;
-            answer.Value = checked((uint)Math.DivRem(tempValueA, tempValueB, out ignoreRemainder));
+            answer.Value = checked((uint)Math.DivRem(tempValueA, tempValueB, out int ignoreRemainder));
             answer.Decimals = 0;
 
             int divideValue = tempValueA;
@@ -107,14 +106,14 @@ namespace RekenTest.Common.Implementers
             while (((divideValue % valueB.Value) != 0) // % == modulus
                 && (extraDecimals < ProblemValueTypes.MaxDecimalDigits))
             {
-                divideValue = divideValue * 10;
+                divideValue *= 10;
                 extraDecimals++;
             }
 
             int answerDecimals = valueA.Decimals - valueB.Decimals + extraDecimals;
             while (answerDecimals < 0 )
             {
-                divideValue = divideValue * 10;
+                divideValue *= 10;
                 answerDecimals++;
             }
 

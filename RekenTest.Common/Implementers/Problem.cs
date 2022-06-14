@@ -11,9 +11,9 @@ namespace RekenTest.Common.Implementers
         private IProblemValue _problemValueB;
         private ProblemType _problemType;
 
-        public IProblemValue ValueA { get { return _problemValueA; } }
-        public IProblemValue ValueB { get { return _problemValueB; } }
-        public ProblemType Type { get { return _problemType; } }
+        public IProblemValue ValueA => _problemValueA;
+        public IProblemValue ValueB => _problemValueB;
+        public ProblemType Type => _problemType;
 
         public void AssignValues(ProblemType problemType, IProblemValue problemValueA, IProblemValue problemValueB)
         {

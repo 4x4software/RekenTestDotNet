@@ -10,29 +10,19 @@ namespace RekenTest.Common.Implementers
 {
     public class ProblemValue : IProblemValue
     {
-        private uint _value = 0;
-        private byte _decimals = 0;
+        public uint Value { get; set; } = 0;
 
-        public uint Value
-        {
-            get { return _value; }
-            set { _value = value; }
-        }
-        public byte Decimals
-        {
-            get { return _decimals; }
-            set { _decimals = value; }
-        }
+        public byte Decimals { get; set; } = 0;
 
         public void Assign(IProblemValue source)
         {
-            _value = source.Value;
-            _decimals = source.Decimals;
+            Value = source.Value;
+            Decimals = source.Decimals;
         }
 
         public bool IsValid()
         {
-            return (_value >= 0) && (_value <= ProblemValueTypes.MaxProblemValue) && (_decimals >= 0) && (_decimals <= ProblemValueTypes.MaxDecimalDigits);
+            return (Value >= 0) && (Value <= ProblemValueTypes.MaxProblemValue) && (Decimals >= 0) && (Decimals <= ProblemValueTypes.MaxDecimalDigits);
         }
 
         public bool ParseFromString(string inputValue)
@@ -46,8 +36,8 @@ namespace RekenTest.Common.Implementers
                 string valueAsString = (decimalSeparatorIndex < 0) ? inputValue : inputValue.Remove(decimalSeparatorIndex, 1);
 
                 // Example: inputValue="1.234" results in: _value=1234 _decimals=3
-                _value = Convert.ToUInt32(valueAsString);
-                _decimals = (decimalSeparatorIndex <= 0) ? (byte)0 : (byte)(inputValue.Length - decimalSeparatorIndex - 1);
+                Value = Convert.ToUInt32(valueAsString);
+                Decimals = (decimalSeparatorIndex <= 0) ? (byte)0 : (byte)(inputValue.Length - decimalSeparatorIndex - 1);
 
                 return IsValid();
             }
@@ -59,12 +49,12 @@ namespace RekenTest.Common.Implementers
 
         public void RemoveTrailingZeros()
         {
-            while (_decimals > 0) 
+            while (Decimals > 0) 
             {
-                if (_value % 10 == 0)
+                if (Value % 10 == 0)
                 {
-                    _value = _value / 10; // note that / operator is an integer division
-                    _decimals--;
+                    Value = Value / 10; // note that / operator is an integer division
+                    Decimals--;
                 }
                 else
                     break;
@@ -81,7 +71,7 @@ namespace RekenTest.Common.Implementers
                     }
                 default:
                     {
-                        return false;
+                        throw new NotImplementedException("SetAnswerForValues");
                     }
             }
         }
