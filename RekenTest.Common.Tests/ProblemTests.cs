@@ -14,7 +14,7 @@ namespace RekenTest.Common.Tests
         [SetUp]
         public void Setup()
         {
-            ClassSUT = new Problem();
+            ClassSUT = new Problem(new ProblemValueFactory());
         }
 
         [Test]
@@ -26,7 +26,6 @@ namespace RekenTest.Common.Tests
         [TestCase("1+", "")]
         [TestCase("+1", "")]
         [TestCase("+", "")]
-        [TestCase("1++1", "")]
 
         [TestCase("1-", "")]
         [TestCase("-+1", "")]
@@ -42,10 +41,26 @@ namespace RekenTest.Common.Tests
         [TestCase("/1", "")]
         [TestCase("/", "")]
         [TestCase("1//1", "")]
-        [Test]
         public void ParseFromString_InvalidInputString_ShouldReturnFalse(string value, string message)
         {
             Assert.IsFalse(ClassSUT.ParseFromString(value), message);
+        }
+
+        [TestCase("1++1", "+1 parses as 1")]
+        public void ParseFromString_ValidInputString_ShouldReturnTrue(string value, string message)
+        {
+            Assert.IsTrue(ClassSUT.ParseFromString(value), message);
+        }
+        
+        [TestCase("1+2", ProblemType.ptAdd, "1", "2")]
+        [TestCase("2-1", ProblemType.ptSubtract, "2", "1")]
+        [TestCase("3*2", ProblemType.ptMultiply, "3", "2")]
+        [TestCase("6/2", ProblemType.ptDivide, "6", "2")]
+        public void ParseFromString_BasicTests(string actual, ProblemType expectedType, string expectedValueA, string expectedValueB)
+        {
+            Assert.IsTrue(ClassSUT.ParseFromString(actual), actual);
+            
+            
         }
     }
 }
