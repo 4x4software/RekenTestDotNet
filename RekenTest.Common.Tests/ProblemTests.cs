@@ -9,12 +9,12 @@ namespace RekenTest.Common.Tests
 {
     public class ProblemTests
     {
-        private IProblem ClassSUT = null;
+        private IProblem _classSut = null;
 
         [SetUp]
         public void Setup()
         {
-            ClassSUT = new Problem(new ProblemValueFactory());
+            _classSut = new Problem(new ProblemValueFactory());
         }
 
         [Test]
@@ -43,13 +43,13 @@ namespace RekenTest.Common.Tests
         [TestCase("1//1", "")]
         public void ParseFromString_InvalidInputString_ShouldReturnFalse(string value, string message)
         {
-            Assert.IsFalse(ClassSUT.ParseFromString(value), message);
+            Assert.IsFalse(_classSut.ParseFromString(value), message);
         }
 
         [TestCase("1++1", "+1 parses as 1")]
         public void ParseFromString_ValidInputString_ShouldReturnTrue(string value, string message)
         {
-            Assert.IsTrue(ClassSUT.ParseFromString(value), message);
+            Assert.IsTrue(_classSut.ParseFromString(value), message);
         }
         
         [TestCase("1+2", ProblemType.ptAdd, "1", "2")]
@@ -58,9 +58,25 @@ namespace RekenTest.Common.Tests
         [TestCase("6/2", ProblemType.ptDivide, "6", "2")]
         public void ParseFromString_BasicTests(string actual, ProblemType expectedType, string expectedValueA, string expectedValueB)
         {
-            Assert.IsTrue(ClassSUT.ParseFromString(actual), actual);
-            
-            
+            Assert.IsTrue(_classSut.ParseFromString(actual), actual);
+        }
+
+        [TestCase("0.001+123.456", ProblemType.ptAdd, "0.001", "123.456")]
+        [TestCase("1.234-1.233", ProblemType.ptSubtract, "1.234", "1.233")]
+        [TestCase("0.5*20.2", ProblemType.ptMultiply, "0.5", "20.2")]
+        [TestCase("0.6/20.5", ProblemType.ptDivide, "0.6", "20.5")]
+        public void ParseFromString_DecimalValues(string actual, ProblemType expectedType, string expectedValueA, string expectedValueB)
+        {
+            Assert.IsTrue(_classSut.ParseFromString(actual), actual);
+        }
+
+        [TestCase("  1 +  2  ", ProblemType.ptAdd, "1", "2")]
+        [TestCase(" 2  -  1 ", ProblemType.ptSubtract, "2", "1")]
+        [TestCase("  3 *2 ", ProblemType.ptMultiply, "3", "2")]
+        [TestCase("6/ 2 ", ProblemType.ptDivide, "6", "2")]
+        public void ParseFromString_WhiteSpace(string actual, ProblemType expectedType, string expectedValueA, string expectedValueB)
+        {
+            Assert.IsTrue(_classSut.ParseFromString(actual), actual);
         }
     }
 }
