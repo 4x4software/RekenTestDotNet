@@ -68,6 +68,17 @@ namespace RekenTest.Common.Tests
         public void ParseFromString_DecimalValues(string actual, ProblemType expectedType, string expectedValueA, string expectedValueB)
         {
             Assert.IsTrue(_classSut.ParseFromString(actual), actual);
+            
+            Assert.AreEqual(expectedType, _classSut.Type);
+        }
+
+        [TestCase("999999+1.23456")]
+        [TestCase("1.234-2.233")]
+        [TestCase("0.00005*0.000005")]
+        [TestCase("5/3")]
+        public void ParseFromString_InvalidAnswers(string actual)
+        {
+            Assert.IsFalse(_classSut.ParseFromString(actual), actual);
         }
 
         [TestCase("  1 +  2  ", ProblemType.ptAdd, "1", "2")]

@@ -9,5 +9,9 @@ namespace RekenTest.Common.Interfaces
         public void AssignValues(ProblemType problemType, IProblemValue problemValueA, IProblemValue problemValueB);
         public bool ParseFromString(string problemAsText);
         public IProblemValue GetCorrectAnswer();
+        
+        public IProblemValue ValueA { get; }
+        public IProblemValue ValueB { get; }
+        public ProblemType Type { get; }
     }
 }

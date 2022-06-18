@@ -13,8 +13,8 @@ namespace RekenTest.Common.Implementers
 
         public IProblemValue ValueA => _problemValueA;
         public IProblemValue ValueB => _problemValueB;
-        public ProblemType Type => _problemType;
-
+        public ProblemType Type => _problemType; 
+        
         public Problem(IProblemValueFactory problemValueFactory)
         {
             _problemValueA = problemValueFactory.NewProblemValue();
@@ -39,11 +39,12 @@ namespace RekenTest.Common.Implementers
 
             if (indexSymbol > 0)
             {
+                _problemType = (ProblemType)problemType;
                 if (!_problemValueA.ParseFromString(problemAsText.Substring(0, indexSymbol)))
                     return false;
                 if (!_problemValueB.ParseFromString(problemAsText.Substring(indexSymbol + 1)))
                     return false;
-                
+
                 return true;
             }
 
@@ -55,7 +56,7 @@ namespace RekenTest.Common.Implementers
             problemType = null;
             int indexSymbol = problemAsText.IndexOf(ProblemValueTypes.ProblemTypeAddSymbol);
 
-            
+
             if (indexSymbol >= 0)
                 problemType = ProblemType.ptAdd;
             else
@@ -69,10 +70,12 @@ namespace RekenTest.Common.Implementers
                     if (indexSymbol >= 0)
                         problemType = ProblemType.ptMultiply;
                     else
+                    {
                         indexSymbol = problemAsText.IndexOf(ProblemValueTypes.ProblemTypeDivideSymbol);
 
-                    if (indexSymbol >= 0)
-                        problemType = ProblemType.ptDivide;
+                        if (indexSymbol >= 0)
+                            problemType = ProblemType.ptDivide;
+                    }
                 }
             }
 
