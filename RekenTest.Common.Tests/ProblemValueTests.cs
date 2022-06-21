@@ -5,7 +5,7 @@ using System;
 
 namespace RekenTest.Common.Tests
 {
-    public class ProblemValueTests: ProblemValueTestBase
+    public class ProblemValueTests : ProblemValueTestBase
     {
         private IProblemValue classSUT = null;
 
@@ -25,6 +25,19 @@ namespace RekenTest.Common.Tests
             classSUT.Assign(sourceValue);
             Assert.AreEqual(sourceValue.Value, classSUT.Value);
             Assert.AreEqual(sourceValue.Decimals, classSUT.Decimals);
+        }
+
+        [Test]
+        public void Clear_Test()
+        {
+            IProblemValue classSUT = problemValueFactory.NewProblemValue();
+            classSUT.Value = 123;
+            classSUT.Decimals = 2;
+         
+            classSUT.Clear();
+
+            Assert.AreEqual(0, classSUT.Value);
+            Assert.AreEqual(0,classSUT.Decimals);
         }
 
         [Test]
@@ -161,7 +174,7 @@ namespace RekenTest.Common.Tests
         {
             IProblemValue some = problemValueFactory.NewProblemValue(someValue);
             IProblemValue other = problemValueFactory.NewProblemValue(otherValue);
-            
+
             Assert.IsTrue(some.IsEqualTo(other));
         }
 
@@ -176,7 +189,7 @@ namespace RekenTest.Common.Tests
         {
             IProblemValue some = problemValueFactory.NewProblemValue(someValue);
             IProblemValue other = problemValueFactory.NewProblemValue(otherValue);
-            
+
             Assert.IsFalse(some.IsEqualTo(other));
         }
     }

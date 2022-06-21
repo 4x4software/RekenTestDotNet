@@ -66,6 +66,12 @@ namespace RekenTest.Common.Implementers
             return ((Value == otherValue.Value) && (Decimals == otherValue.Decimals));
         }
 
+        public void Clear()
+        {
+            Value = 0;
+            Decimals = 0;
+        }
+
         public bool SetAnswerForValues(ProblemType problemType, IProblemValue valueA, IProblemValue valueB)
         {
             switch (problemType)

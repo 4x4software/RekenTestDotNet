@@ -1,6 +1,7 @@
 ﻿using RekenTest.Common.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace RekenTest.Common.Implementers
@@ -10,6 +11,7 @@ namespace RekenTest.Common.Implementers
         private IProblemValue _problemValueA;
         private IProblemValue _problemValueB;
         private ProblemType _problemType;
+        private IProblemValue _correctAnswer;
 
         public IProblemValue ValueA => _problemValueA;
         public IProblemValue ValueB => _problemValueB;
@@ -19,6 +21,7 @@ namespace RekenTest.Common.Implementers
         {
             _problemValueA = problemValueFactory.NewProblemValue();
             _problemValueB = problemValueFactory.NewProblemValue();
+            _correctAnswer = problemValueFactory.NewProblemValue();
         }
 
         public void AssignValues(ProblemType problemType, IProblemValue problemValueA, IProblemValue problemValueB)
@@ -30,7 +33,21 @@ namespace RekenTest.Common.Implementers
 
         public IProblemValue GetCorrectAnswer()
         {
-            throw new NotImplementedException();
+            _correctAnswer.Clear();
+            
+            switch (_problemType)
+            {
+                case ProblemType.ptAdd:
+                {
+                    if (ProblemCalculator.AddProblemValues(_problemValueA, _problemValueB, _correctAnswer))
+                        return _correctAnswer;
+                    
+                    return null;
+                }
+                
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         public bool ParseFromString(string problemAsText)
