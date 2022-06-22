@@ -8,7 +8,7 @@ using System.Text;
 namespace RekenTest.Common.Tests
 {
     [TestFixture]
-    public class ProblemCalculatorTests : ProblemValueTestBase
+    public class ProblemCalculatorTests : ProblemTestBase
     {
         [Test]
         [TestCase("1000000", "1000000", 0)]

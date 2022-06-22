@@ -5,7 +5,7 @@ using System;
 
 namespace RekenTest.Common.Tests
 {
-    public class ProblemValueTests : ProblemValueTestBase
+    public class ProblemValueTests : ProblemTestBase
     {
         private IProblemValue classSUT = null;
 

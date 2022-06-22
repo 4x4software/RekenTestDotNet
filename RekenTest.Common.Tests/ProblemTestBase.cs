@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RekenTest.Common.Tests
 {
-    public class ProblemValueTestBase
+    public class ProblemTestBase
     {
         protected IProblemValueFactory problemValueFactory = null;
 

@@ -7,7 +7,7 @@ using RekenTest.Common.Interfaces;
 
 namespace RekenTest.Common.Tests
 {
-    public class ProblemTests
+    public class ProblemTests: ProblemTestBase
     {
         private IProblem _classSut = null;
 
@@ -59,6 +59,10 @@ namespace RekenTest.Common.Tests
         public void ParseFromString_BasicTests(string actual, ProblemType expectedType, string expectedValueA, string expectedValueB)
         {
             Assert.IsTrue(_classSut.ParseFromString(actual), actual);
+
+            Assert.AreEqual(expectedType, _classSut.Type);
+            Assert.IsTrue(_classSut.ValueA.IsEqualTo(problemValueFactory.NewProblemValue(expectedValueA)));
+            Assert.IsTrue(_classSut.ValueB.IsEqualTo(problemValueFactory.NewProblemValue(expectedValueB)));
         }
 
         [TestCase("0.001+123.456", ProblemType.ptAdd, "0.001", "123.456")]
@@ -68,8 +72,10 @@ namespace RekenTest.Common.Tests
         public void ParseFromString_DecimalValues(string actual, ProblemType expectedType, string expectedValueA, string expectedValueB)
         {
             Assert.IsTrue(_classSut.ParseFromString(actual), actual);
-            
+
             Assert.AreEqual(expectedType, _classSut.Type);
+            Assert.IsTrue(_classSut.ValueA.IsEqualTo(problemValueFactory.NewProblemValue(expectedValueA)));
+            Assert.IsTrue(_classSut.ValueB.IsEqualTo(problemValueFactory.NewProblemValue(expectedValueB)));
         }
 
         [TestCase("999999+1.23456")]
@@ -88,6 +94,10 @@ namespace RekenTest.Common.Tests
         public void ParseFromString_WhiteSpace(string actual, ProblemType expectedType, string expectedValueA, string expectedValueB)
         {
             Assert.IsTrue(_classSut.ParseFromString(actual), actual);
+
+            Assert.AreEqual(expectedType, _classSut.Type);
+            Assert.IsTrue(_classSut.ValueA.IsEqualTo(problemValueFactory.NewProblemValue(expectedValueA)));
+            Assert.IsTrue(_classSut.ValueB.IsEqualTo(problemValueFactory.NewProblemValue(expectedValueB)));
         }
     }
 }
