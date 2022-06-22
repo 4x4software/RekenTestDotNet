@@ -33,21 +33,7 @@ namespace RekenTest.Common.Implementers
 
         public IProblemValue GetCorrectAnswer()
         {
-            _correctAnswer.Clear();
-            
-            switch (_problemType)
-            {
-                case ProblemType.ptAdd:
-                {
-                    if (ProblemCalculator.AddProblemValues(_problemValueA, _problemValueB, _correctAnswer))
-                        return _correctAnswer;
-                    
-                    return null;
-                }
-                
-                default:
-                    throw new NotImplementedException();
-            }
+            return null;
         }
 
         public bool ParseFromString(string problemAsText)
