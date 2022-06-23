@@ -15,8 +15,8 @@ namespace RekenTest.Common.Implementers
 
         public IProblemValue ValueA => _problemValueA;
         public IProblemValue ValueB => _problemValueB;
-        public ProblemType Type => _problemType; 
-        
+        public ProblemType Type => _problemType;
+
         public Problem(IProblemValueFactory problemValueFactory)
         {
             _problemValueA = problemValueFactory.NewProblemValue();
@@ -33,7 +33,18 @@ namespace RekenTest.Common.Implementers
 
         public IProblemValue GetCorrectAnswer()
         {
+            if (ProblemCalculator.CalculateCorrectAnswer(_problemType, _problemValueA, _problemValueB, _correctAnswer))
+                return _correctAnswer;
+
             return null;
+        }
+
+        public bool IsValid()
+        {
+            if (GetCorrectAnswer() == null)
+                return false;
+
+            return (_problemValueA.IsValid() && _problemValueB.IsValid() && _correctAnswer.IsValid());
         }
 
         public bool ParseFromString(string problemAsText)
@@ -48,7 +59,7 @@ namespace RekenTest.Common.Implementers
                 if (!_problemValueB.ParseFromString(problemAsText.Substring(indexSymbol + 1)))
                     return false;
 
-                return true;
+                return IsValid();
             }
 
             return false;
