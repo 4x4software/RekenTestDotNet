@@ -8,7 +8,7 @@ using System.Text;
 namespace RekenTest.Common.Tests
 {
     [TestFixture]
-    public class ProblemCalculatorTests : ProblemValueTestBase
+    public class ProblemCalculatorTests : ProblemTestBase
     {
         [Test]
         [TestCase("1000000", "1000000", 0)]
@@ -186,5 +186,35 @@ namespace RekenTest.Common.Tests
 
             Assert.IsFalse(ProblemCalculator.DivideProblemValues(valueA, valueB, actual), message);
         }
+
+        [TestCase(ProblemType.ptAdd, "1", "2", "3")]
+        [TestCase(ProblemType.ptSubtract, "4", "3", "1")]
+        [TestCase(ProblemType.ptMultiply, "2", "3", "6")]
+        [TestCase(ProblemType.ptDivide, "10", "5", "2")]
+        public void CalculateCorrectAnswer_BasicTests_GoodInput(ProblemType problemType, string inputValueA, string inputValueB, string expectedAnswer)
+        {
+            IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
+            IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
+            IProblemValue actualAnswer = problemValueFactory.NewProblemValue();
+            
+            Assert.IsTrue(ProblemCalculator.CalculateCorrectAnswer(problemType, valueA, valueB, actualAnswer));
+            Assert.IsTrue(actualAnswer.IsEqualTo(problemValueFactory.NewProblemValue(expectedAnswer)));
+        }
+        
+        [TestCase(ProblemType.ptAdd, "0.000001", "1000000")]
+        [TestCase(ProblemType.ptSubtract, "4", "5")]
+        [TestCase(ProblemType.ptMultiply, "0.000001", "0.000001")]
+        [TestCase(ProblemType.ptDivide, "1", "3")]
+        public void CalculateCorrectAnswer_BasicTests_BadInput(ProblemType problemType, string inputValueA, string inputValueB)
+        {
+            IProblemValue valueA = problemValueFactory.NewProblemValue(inputValueA);
+            IProblemValue valueB = problemValueFactory.NewProblemValue(inputValueB);
+            IProblemValue actualAnswer = problemValueFactory.NewProblemValue();
+            
+            Assert.IsFalse(ProblemCalculator.CalculateCorrectAnswer(problemType, valueA, valueB, actualAnswer));
+            // TODO: actual answer should be empty?
+            // Assert.IsTrue(actualAnswer.IsEqualTo(problemValueFactory.NewProblemValue()));
+        }
+        
     }
 }

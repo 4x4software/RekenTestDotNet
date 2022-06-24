@@ -7,6 +7,25 @@ namespace RekenTest.Common.Implementers
 {
     public static class ProblemCalculator
     {
+        public static bool CalculateCorrectAnswer(ProblemType problemType, IProblemValue problemValueA,
+            IProblemValue problemValueB, IProblemValue correctAnswer)
+        {
+            switch (problemType)
+            {
+                case ProblemType.ptAdd:
+                    return AddProblemValues(problemValueA, problemValueB, correctAnswer);
+                case ProblemType.ptSubtract:
+                    return SubtractProblemValues(problemValueA, problemValueB, correctAnswer);
+                case ProblemType.ptMultiply:
+                    return MultiplyProblemValues(problemValueA, problemValueB, correctAnswer);
+                case ProblemType.ptDivide:
+                    return DivideProblemValues(problemValueA, problemValueB, correctAnswer);
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         public static bool MakeDecimalsEqual(ref IProblemValue valueA, ref IProblemValue valueB)
         {
             if (valueA.Decimals == valueB.Decimals)
@@ -21,7 +40,9 @@ namespace RekenTest.Common.Implementers
             {
                 valueToChange = valueB;
                 valueToKeep = valueA;
-            };
+            }
+
+            ;
 
             uint newValue = valueToChange.Value * (uint)Math.Pow(10, valueToKeep.Decimals - valueToChange.Decimals);
             if (newValue > ProblemValueTypes.MaxProblemValue)
@@ -33,7 +54,8 @@ namespace RekenTest.Common.Implementers
             return true;
         }
 
-        private static bool AddSubtractProblemValues(IProblemValue valueA, IProblemValue valueB, IProblemValue answer, bool subtractValues)
+        private static bool AddSubtractProblemValues(IProblemValue valueA, IProblemValue valueB, IProblemValue answer,
+            bool subtractValues)
         {
             IProblemValue tempValueA = new ProblemValue();
             tempValueA.Assign(valueA);
@@ -97,24 +119,23 @@ namespace RekenTest.Common.Implementers
             int tempValueB = checked((int)valueB.Value);
 
             // temp - no decimals answer
-            int ignoreRemainder = 0;
-            answer.Value = checked((uint)Math.DivRem(tempValueA, tempValueB, out ignoreRemainder));
+            answer.Value = checked((uint)Math.DivRem(tempValueA, tempValueB, out int ignoreRemainder));
             answer.Decimals = 0;
 
             int divideValue = tempValueA;
             byte extraDecimals = 0;
 
             while (((divideValue % valueB.Value) != 0) // % == modulus
-                && (extraDecimals < ProblemValueTypes.MaxDecimalDigits))
+                   && (extraDecimals < ProblemValueTypes.MaxDecimalDigits))
             {
-                divideValue = divideValue * 10;
+                divideValue *= 10;
                 extraDecimals++;
             }
 
             int answerDecimals = valueA.Decimals - valueB.Decimals + extraDecimals;
-            while (answerDecimals < 0 )
+            while (answerDecimals < 0)
             {
-                divideValue = divideValue * 10;
+                divideValue *= 10;
                 answerDecimals++;
             }
 

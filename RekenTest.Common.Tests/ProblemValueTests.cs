@@ -5,7 +5,7 @@ using System;
 
 namespace RekenTest.Common.Tests
 {
-    public class ProblemValueTests: ProblemValueTestBase
+    public class ProblemValueTests : ProblemTestBase
     {
         private IProblemValue classSUT = null;
 
@@ -25,6 +25,19 @@ namespace RekenTest.Common.Tests
             classSUT.Assign(sourceValue);
             Assert.AreEqual(sourceValue.Value, classSUT.Value);
             Assert.AreEqual(sourceValue.Decimals, classSUT.Decimals);
+        }
+
+        [Test]
+        public void Clear_Test()
+        {
+            IProblemValue classSUT = problemValueFactory.NewProblemValue();
+            classSUT.Value = 123;
+            classSUT.Decimals = 2;
+         
+            classSUT.Clear();
+
+            Assert.AreEqual(0, classSUT.Value);
+            Assert.AreEqual(0,classSUT.Decimals);
         }
 
         [Test]
@@ -148,6 +161,36 @@ namespace RekenTest.Common.Tests
 
             Assert.AreEqual(expected.Value, value.Value);
             Assert.AreEqual(expected.Decimals, value.Decimals);
+        }
+
+        [TestCase("0", "0")]
+        [TestCase("1", "1")]
+        [TestCase("0.1", "0.1")]
+        [TestCase("0.000001", "0.000001")]
+        [TestCase("1.234", "1.234")]
+        [TestCase("123456.7", "123456.7")]
+        [TestCase("9999998", "9999998")]
+        public void IsEqualTo_True_Tests(string someValue, string otherValue)
+        {
+            IProblemValue some = problemValueFactory.NewProblemValue(someValue);
+            IProblemValue other = problemValueFactory.NewProblemValue(otherValue);
+
+            Assert.IsTrue(some.IsEqualTo(other));
+        }
+
+        [TestCase("0", "1")]
+        [TestCase("1", "2")]
+        [TestCase("0.1", "0.2")]
+        [TestCase("0.000001", "0.00001")]
+        [TestCase("1.234", "1.2345")]
+        [TestCase("123456.7", "1.234567")]
+        [TestCase("9999998", "999998")]
+        public void IsEqualTo_False_Tests(string someValue, string otherValue)
+        {
+            IProblemValue some = problemValueFactory.NewProblemValue(someValue);
+            IProblemValue other = problemValueFactory.NewProblemValue(otherValue);
+
+            Assert.IsFalse(some.IsEqualTo(other));
         }
     }
 }
