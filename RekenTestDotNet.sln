@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31829.152
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RekenTest.AndroidApp", "RekenTest.AndroidApp\RekenTest.AndroidApp.csproj", "{80419FEB-6324-40FE-BC00-9BC6B3120C4B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RekenTest.Common", "RekenTest.Common\RekenTest.Common.csproj", "{A6F0395D-2BB6-4B97-8F21-5B52409C277F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RekenTest.Common.Tests", "RekenTest.Common.Tests\RekenTest.Common.Tests.csproj", "{165BA76F-495B-4C54-9283-5BF814F9FAE1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RekenTest.HostCmdApp", "RekenTest.HostCmdApp\RekenTest.HostCmdApp.csproj", "{91D53A00-5EDB-4185-A67C-789413D17E31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{165BA76F-495B-4C54-9283-5BF814F9FAE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{165BA76F-495B-4C54-9283-5BF814F9FAE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{165BA76F-495B-4C54-9283-5BF814F9FAE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91D53A00-5EDB-4185-A67C-789413D17E31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91D53A00-5EDB-4185-A67C-789413D17E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91D53A00-5EDB-4185-A67C-789413D17E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91D53A00-5EDB-4185-A67C-789413D17E31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
