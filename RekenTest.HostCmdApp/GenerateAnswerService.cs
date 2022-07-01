@@ -32,10 +32,11 @@ namespace RekenTest.HostCmdApp
 
         protected override void DoWork()
         {
+            _logger.LogInformation($"Input value: {_settings.Problem}");
             if (_problem.ParseFromString(_settings.Problem))
-                _logger.LogInformation(_problem.GetCorrectAnswer().ToString());
+                _logger.LogInformation($"Answer: {_problem.GetCorrectAnswer()}");
             else
-                _logger.LogError("Invalid problem: " + _settings.Problem);
+                _logger.LogError("Invalid problem!");
         }
     }
 }
