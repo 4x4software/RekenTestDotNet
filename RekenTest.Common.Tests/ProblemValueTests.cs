@@ -108,13 +108,15 @@ namespace RekenTest.Common.Tests
         [TestCase("1.234", 1234, 3)]
         [TestCase("123456.7", 1234567, 1)]
         [TestCase("9999998", ProblemValueTypes.MaxProblemValue, 0)]
-        public void ParseFromString_ValueTests(string input, int expectedValue, byte expectedDecimals)
+        public void ParseFromString_ValueTests_ToStringTests(string input, int expectedValue, byte expectedDecimals)
         {
             Assert.IsTrue(classSUT.ParseFromString(input));
 
             Assert.AreEqual(expectedValue, classSUT.Value, input);
             Assert.AreEqual(expectedDecimals, classSUT.Decimals, input);
             Assert.IsTrue(classSUT.IsValid());
+            
+            Assert.AreEqual(input, classSUT.ToString());
         }
 
         [Test]

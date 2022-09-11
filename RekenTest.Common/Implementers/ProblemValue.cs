@@ -47,6 +47,13 @@ namespace RekenTest.Common.Implementers
             }
         }
 
+        public override string ToString()
+        {
+            // cast to double to make / operator a floating point division operator
+            // use format string to force decimal representation and avoid scientific notation
+            return ((double)Value / Math.Pow(10, Decimals)).ToString($"F{Decimals}");
+        }
+
         public void RemoveTrailingZeros()
         {
             while (Decimals > 0) 
