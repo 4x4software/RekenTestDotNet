@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RekenTest.Common\RekenTest.Common.csproj" />
+    <ProjectReference Include="..\RekenTest.Database\RekenTest.Database.csproj" />
   </ItemGroup>
 
   <ItemGroup>
