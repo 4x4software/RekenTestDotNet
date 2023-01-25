@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RekenTest.Common.Tests", "R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RekenTest.HostCmdApp", "RekenTest.HostCmdApp\RekenTest.HostCmdApp.csproj", "{91D53A00-5EDB-4185-A67C-789413D17E31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RekenTest.Database", "RekenTest.Database\RekenTest.Database.csproj", "{43AF370C-474D-4781-A372-3134D94EE7C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{91D53A00-5EDB-4185-A67C-789413D17E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91D53A00-5EDB-4185-A67C-789413D17E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91D53A00-5EDB-4185-A67C-789413D17E31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43AF370C-474D-4781-A372-3134D94EE7C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43AF370C-474D-4781-A372-3134D94EE7C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43AF370C-474D-4781-A372-3134D94EE7C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43AF370C-474D-4781-A372-3134D94EE7C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

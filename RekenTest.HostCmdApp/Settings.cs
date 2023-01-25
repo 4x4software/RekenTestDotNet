@@ -1,6 +1,7 @@
-﻿namespace RekenTest.HostCmdApp;
-
-public class Settings
+﻿namespace RekenTest.HostCmdApp
 {
-    public string Problem { get; set; }
+    public class Settings
+    {
+        public string Problem { get; set; }
+    }
 }
